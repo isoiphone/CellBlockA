@@ -1,0 +1,102 @@
+name: Native Mac and Linux builds
+on:
+  push:
+    paths: &game_paths
+      - 'src/**'
+      - 'tools/**'
+      - 'tests/**'
+      - 'original/**'
+      - 'original-1.3b/**'
+      - 'analysis/jailed*/**'
+      - 'analysis/jailed*'
+      - 'analysis/typed/**'
+      - 'analysis/typed-1.3b/**'
+      - 'analysis/types-1.3b.h'
+      - 'analysis/original-1.3b-sha256.json'
+      - 'analysis/recovery-1.3b.json'
+      - 'analysis/types.h'
+      - 'analysis/original-sha256.json'
+      - 'vendor/JGMOD-main/**'
+      - 'docs/**'
+      - 'README.md'
+      - 'LICENSE'
+      - 'ASSET_LICENSE.md'
+      - 'THIRD_PARTY_NOTICES.md'
+      - 'CONTRIBUTING.md'
+      - 'CHANGELOG.md'
+      - '.gitattributes'
+      - '.gitignore'
+      - '.github/workflows/native.yml'
+      - '.github/ISSUE_TEMPLATE/**'
+  pull_request:
+    paths: *game_paths
+  workflow_call:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            name: Linux-x64
+          - runner: macos-15
+            name: macOS-arm64
+          - runner: macos-15-intel
+            name: macOS-x64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Linux build dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y clang libsdl2-dev zenity
+      - name: Mac build dependencies
+        if: runner.os == 'macOS'
+        run: brew install sdl2-compat sdl3
+      - name: Check public source inputs
+        run: python3 tools/check_repo.py
+      - name: Verify isolated source archive
+        run: python3 tools/test_source.py
+      - name: Sanitizer regression tests
+        run: ./tools/test.sh
+      - name: Package native game and editor
+        run: ./tools/package.sh
+      - name: Mac package smoke test
+        if: runner.os == 'macOS'
+        run: python3 tools/test_package.py 'dist/Cell Block A.app'
+      - name: Linux package smoke test
+        if: runner.os == 'Linux'
+        run: python3 tools/test_package.py "dist/CellBlockA-Linux-$(uname -m)"
+      - name: Mac editor and game integration
+        if: runner.os == 'macOS'
+        run: python3 tools/test_jailed.py --editor 'dist/Jail-ed.app/Contents/MacOS/Jailed' --game 'dist/Cell Block A.app/Contents/MacOS/CellBlockA'
+      - name: Linux editor and game integration
+        if: runner.os == 'Linux'
+        run: python3 tools/test_jailed.py --editor "dist/Jailed-Linux-$(uname -m)/Jailed" --game "dist/CellBlockA-Linux-$(uname -m)/CellBlockA"
+      - name: Export native source
+        if: matrix.name == 'Linux-x64'
+        run: python3 tools/export_source.py
+      - name: Keep one source archive in the release collection
+        if: runner.os == 'macOS'
+        run: python3 -c "from pathlib import Path; Path('dist/CellBlockA-source.tar.gz').unlink(missing_ok=True)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CellBlockA-${{ matrix.name }}
+          path: |
+            dist/*.zip
+            dist/*.tar.gz
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Test-logs-${{ matrix.name }}
+          path: |
+            build/core-test.log
+            build/jailed-package-test/*.log
+            build/package-test/smoke-test.log

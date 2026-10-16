@@ -1,0 +1,11 @@
+# The original bytes are evidence: never translate their DOS line endings.
+original/** -text
+original-1.3b/** -text
+/archives/*.zip -text
+# Preserve archived website response bytes and their recorded hashes.
+www/_archive/original/** -text
+www/downloads/** -text
+www/*.html -text
+www/1999/*.html -text
+www/2001/*.html -text
+/tools/*.sh text eol=lf

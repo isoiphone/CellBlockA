@@ -1,0 +1,32 @@
+# Local metadata and Python caches, at any depth.
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# Reproducible native builds and downloaded recovery tools.
+/build/
+/dist/
+/vendor/ghidra_*/
+/vendor/jdk-*/
+
+# Keep only reproducible-build inputs from the reverse-engineering workspace.
+/analysis/*
+!/analysis/typed/
+!/analysis/typed-1.3b/
+!/analysis/types.h
+!/analysis/types-1.3b.h
+!/analysis/original-sha256.json
+!/analysis/original-1.3b-sha256.json
+!/analysis/recovery-1.3b.json
+!/analysis/symbols-1.3b.tsv
+!/analysis/jailed-1.0/
+!/analysis/jailed-1.3b/
+!/analysis/jailed-types-1.3b.h
+!/analysis/jailed-symbols-1.3b.tsv
+!/analysis/jailed-recovery.json
+
+# Keep the vendored music source and its notices, not legacy binaries/examples.
+/vendor/JGMOD-main/*
+!/vendor/JGMOD-main/src/
+!/vendor/JGMOD-main/readme.txt
+!/vendor/JGMOD-main/README.md

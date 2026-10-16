@@ -1,0 +1,56 @@
+HTTP/2 302 
+server: nginx
+date: Fri, 16 Oct 2026 06:34:30 GMT
+content-type: text/plain; charset=utf-8
+content-length: 0
+x-archive-redirect-reason: found capture at 20010603033314
+location: https://web.archive.org/web/20010603033314id_/http://www.netidea.com/~kevlarx/maps01.zip
+server-timing: captures_list;dur=1.070578, exclusion.robots;dur=0.127321, exclusion.robots.policy;dur=0.105413, esindex;dur=0.017234, cdx.remote;dur=7.551064, LoadShardBlock;dur=182.930044, PetaboxLoader3.datanode;dur=62.865388, PetaboxLoader3.resolve;dur=12.274116
+x-app-server: wwwb-app267-dc8
+x-ts: 302
+x-tr: 206
+server-timing: TR;dur=0,Tw;dur=0,Tc;dur=0
+x-rl: 0
+x-na: 0
+x-page-cache: BYPASS
+server-timing: BYPASS
+x-nid: CENTURYLINK-US-LEGACY-QWEST
+referrer-policy: no-referrer-when-downgrade
+permissions-policy: interest-cohort=()
+x-sd: 0
+x-location: mp4
+
+HTTP/2 200 
+server: nginx
+date: Fri, 16 Oct 2026 06:34:30 GMT
+content-type: application/zip
+content-length: 382374
+x-archive-orig-date: Sun, 03 Jun 2001 03:32:02 GMT
+x-archive-orig-server: mod_perl/1.16 Apache/1.3.3
+x-archive-orig-last-modified: Sun, 13 Feb 2000 23:05:46 GMT
+x-archive-orig-etag: "4a009-5d5a6-38a738ca"
+x-archive-orig-accept-ranges: bytes
+x-archive-orig-content-length: 382374
+x-archive-orig-connection: close
+cache-control: max-age=1800
+accept-ranges: bytes
+memento-datetime: Sun, 03 Jun 2001 03:33:14 GMT
+link: <http://www.netidea.com:80/~kevlarx/maps01.zip>; rel="original", <https://web.archive.org/web/timemap/link/http://www.netidea.com:80/~kevlarx/maps01.zip>; rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://www.netidea.com:80/~kevlarx/maps01.zip>; rel="timegate"
+content-security-policy: default-src 'self' 'unsafe-eval' 'unsafe-inline' data: blob: archive.org web.archive.org web-static.archive.org wayback-api.archive.org athena.archive.org analytics.archive.org pragma.archivelab.org wwwb-events.archive.org
+x-archive-src: DF_crawl4.20010602224448-c/DF_crawl4.20010603033312.arc.gz
+server-timing: captures_list;dur=0.394684, exclusion.robots;dur=0.047747, exclusion.robots.policy;dur=0.040706, esindex;dur=0.006978, cdx.remote;dur=12.010352, LoadShardBlock;dur=149.775331, PetaboxLoader3.datanode;dur=136.218322, PetaboxLoader3.resolve;dur=68.378005, load_resource;dur=168.148463
+x-app-server: wwwb-app233-dc8
+x-ts: 200
+x-tr: 346
+server-timing: TR;dur=0,Tw;dur=0,Tc;dur=0
+cache-control: private
+x-rl: 0
+x-na: 0
+x-page-cache: BYPASS
+server-timing: BYPASS
+x-nid: CENTURYLINK-US-LEGACY-QWEST
+referrer-policy: no-referrer-when-downgrade
+permissions-policy: interest-cohort=()
+x-sd: 0
+x-location: mp4
+

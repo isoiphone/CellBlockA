@@ -1,0 +1,37 @@
+name: Historical preservation checks
+on:
+  push:
+    paths: &preservation_paths
+      - 'www/**'
+      - 'archives/**'
+      - 'original/**'
+      - 'original-1.3b/**'
+      - 'analysis/original-sha256.json'
+      - 'analysis/original-1.3b-sha256.json'
+      - 'analysis/recovery-1.3b.json'
+      - 'tools/archive_original.py'
+      - 'tools/extract_release13.py'
+      - '.gitattributes'
+      - '.github/workflows/preservation.yml'
+  pull_request:
+    paths: *preservation_paths
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify preserved website and downloads offline
+        run: python3 www/_archive/restore.py --check
+      - name: Verify original DOS archive offline
+        run: python3 tools/archive_original.py --check
+      - name: Verify 1.3b DOS archive offline
+        run: python3 tools/archive_original.py --version 1.3b --check
+      - name: Verify 1.3b installer provenance offline
+        run: python3 tools/extract_release13.py

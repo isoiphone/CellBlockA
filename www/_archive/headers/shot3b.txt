@@ -1,0 +1,35 @@
+HTTP/2 200 
+server: nginx
+date: Fri, 16 Oct 2026 06:11:16 GMT
+content-type: image/gif
+content-length: 92001
+x-archive-orig-date: Mon, 05 Nov 2001 01:18:57 GMT
+x-archive-orig-server: Apache/1.3.3
+x-archive-orig-last-modified: Wed, 14 Mar 2001 07:16:31 GMT
+x-archive-orig-etag: "1ec83e-16761-3aaf1acf"
+x-archive-orig-accept-ranges: bytes
+x-archive-orig-content-length: 92001
+x-archive-orig-connection: close
+cache-control: max-age=1800
+accept-ranges: bytes
+memento-datetime: Mon, 05 Nov 2001 01:18:55 GMT
+link: <http://netidea.com:80/cell/pics/shot3b.gif>; rel="original", <https://web.archive.org/web/timemap/link/http://netidea.com:80/cell/pics/shot3b.gif>; rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://netidea.com:80/cell/pics/shot3b.gif>; rel="timegate"
+content-security-policy: default-src 'self' 'unsafe-eval' 'unsafe-inline' data: blob: archive.org web.archive.org web-static.archive.org wayback-api.archive.org athena.archive.org analytics.archive.org pragma.archivelab.org wwwb-events.archive.org
+x-archive-src: DH_crawl8.20011104125224-c/DH_crawl8.20011105011826.arc.gz
+server-timing: captures_list;dur=0.390135, exclusion.robots;dur=0.038117, exclusion.robots.policy;dur=0.030551, esindex;dur=0.006422, cdx.remote;dur=31.631932, LoadShardBlock;dur=206.106888, PetaboxLoader3.datanode;dur=137.513174, PetaboxLoader3.resolve;dur=98.358578, load_resource;dur=170.616047
+x-app-server: wwwb-app253-dc8
+x-ts: 200
+x-tr: 426
+server-timing: TR;dur=0,Tw;dur=0,Tc;dur=4
+cache-control: private
+x-location: All
+x-as: 209
+x-rl: 0
+x-na: 0
+x-page-cache: MISS
+server-timing: MISS
+x-nid: CENTURYLINK-US-LEGACY-QWEST
+referrer-policy: no-referrer-when-downgrade
+permissions-policy: interest-cohort=()
+x-sd: 0
+

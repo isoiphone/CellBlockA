@@ -1,0 +1,82 @@
+{
+  "distribution": "Cell Block A 1.3b",
+  "editor_version": "1.1b",
+  "version_address": 9064,
+  "original10_sha256": "3ecc45470c15842aadde4a3658bd3d3aa3789b9f5375c330c52beb695868dd21",
+  "original13_sha256": "ee34ca7fae72c1a2651d1277101d432fd0f371fd4838fccddc3eee56dd321cdd",
+  "functions": {
+    "_dirty": {
+      "address": 6444,
+      "sha256": "84351038421853b7900a022d14790c3a9c93241fdd00e72f329d8e2d1a7c0b32"
+    },
+    "_draw_map": {
+      "address": 8840,
+      "sha256": "d45bf539e564fd2609f4695fc7fcff585a8898ebca4cb5795648afe9333c6b0c"
+    },
+    "_draw_tile": {
+      "address": 11172,
+      "sha256": "e53e0ad4ede518f7d3d7d259f6a79c83f4b8255f0f33e10be0940ac3577a2614"
+    },
+    "_error": {
+      "address": 5492,
+      "sha256": "92cee2bd64824681d077eeb69cda929c1928de86a6c49a3685527ea364d06d31"
+    },
+    "_hit": {
+      "address": 6788,
+      "sha256": "3d5ddf36403d3e570c4d26cf953a5e32a31490fc9990a4afc48f9629cf8d9662"
+    },
+    "_load_map": {
+      "address": 5888,
+      "sha256": "af6b4f4f11112c9da808c7ced50dcc091f9decb6126f67e8d589b692423aa03c"
+    },
+    "_main": {
+      "address": 9148,
+      "sha256": "3289123529a2a610aaed19cf19a1046df51595735eabaafc9f6995ddb9141d88"
+    },
+    "_mappic": {
+      "address": 10312,
+      "sha256": "1a91f00e710083a836b366b0ab562805b7c784ad8fcef827ba75c02262844a44"
+    },
+    "_mark_dirty": {
+      "address": 6552,
+      "sha256": "c51e6ef33f2a8cf742a528789debf58231bdbdca3a5de937d6930479cfbf1306"
+    },
+    "_play_sound": {
+      "address": 6284,
+      "sha256": "c1a17a314acd395657bea6eb63ba5cdf3fb871a98550cad833c8b622e6150d0b"
+    },
+    "_reset_map": {
+      "address": 5616,
+      "sha256": "1f3331bd46c407346f347c8205cec54e23268c4e7f612470245bb78151370438"
+    },
+    "_save_map": {
+      "address": 10588,
+      "sha256": "015afa19100f17321d377df380a85d39b963aab7d911276c77a56ad8e40d8c7f"
+    },
+    "_screen_click": {
+      "address": 6924,
+      "sha256": "5da1dcad312a8c2832fe7421b9a1df19ae6d904d4bb28297de91991a26592f06"
+    }
+  },
+  "horizontal_flip": {
+    "old_address": 42672,
+    "new_address": 42684,
+    "identical_bytes": 32
+  },
+  "method": "1.0 COFF symbols; normalized Capstone instruction alignment; typed Ghidra decompilation of the 1.3b executable. Candidate library labels are not all verified.",
+  "native_core": [
+    "reset_map",
+    "screen_click",
+    "draw_tile",
+    "draw_map",
+    "mappic"
+  ],
+  "host_adaptations": [
+    "SDL event loop and custom cursor presentation",
+    "OS file dialogs and confirmations",
+    "Validated original map load/save and bounded PCX decoding",
+    "Native 64-bit pointer casts",
+    "Clip mouse coordinates outside map",
+    "Shared writable map discovery"
+  ]
+}

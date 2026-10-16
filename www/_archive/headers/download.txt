@@ -1,0 +1,35 @@
+HTTP/2 200 
+server: nginx
+date: Fri, 16 Oct 2026 06:11:31 GMT
+content-type: text/html
+content-length: 2599
+x-archive-orig-date: Tue, 09 Nov 1999 18:03:14 GMT
+x-archive-orig-server: mod_perl/1.16 Apache/1.3.3 (Unix) Debian/GNU mod_perl/1.16 PHP/3.0.12
+x-archive-orig-last-modified: Sat, 16 Oct 1999 01:57:06 GMT
+x-archive-orig-etag: "bf01a-a27-3807db72"
+x-archive-orig-accept-ranges: bytes
+x-archive-orig-content-length: 2599
+x-archive-orig-connection: close
+cache-control: max-age=1800
+accept-ranges: bytes
+memento-datetime: Tue, 09 Nov 1999 18:03:27 GMT
+link: <http://netidea.com:80/cell/download.html>; rel="original", <https://web.archive.org/web/timemap/link/http://netidea.com:80/cell/download.html>; rel="timemap"; type="application/link-format", <https://web.archive.org/web/http://netidea.com:80/cell/download.html>; rel="timegate"
+content-security-policy: default-src 'self' 'unsafe-eval' 'unsafe-inline' data: blob: archive.org web.archive.org web-static.archive.org wayback-api.archive.org athena.archive.org analytics.archive.org pragma.archivelab.org wwwb-events.archive.org
+x-archive-src: sarah-000032-20000229183254-952021729-c/sarah-000033-19991108211940-942170578.arc.gz
+server-timing: captures_list;dur=0.641555, exclusion.robots;dur=0.065811, exclusion.robots.policy;dur=0.050427, esindex;dur=0.009637, cdx.remote;dur=31.530373, LoadShardBlock;dur=247.558181, PetaboxLoader3.datanode;dur=302.012291, PetaboxLoader3.resolve;dur=70.464053, load_resource;dur=479.655021
+x-app-server: wwwb-app245-dc8
+x-ts: 200
+x-tr: 781
+server-timing: TR;dur=0,Tw;dur=0,Tc;dur=1
+cache-control: private
+x-location: All
+x-as: 209
+x-rl: 0
+x-na: 0
+x-page-cache: MISS
+server-timing: MISS
+x-nid: CENTURYLINK-US-LEGACY-QWEST
+referrer-policy: no-referrer-when-downgrade
+permissions-policy: interest-cohort=()
+x-sd: 0
+

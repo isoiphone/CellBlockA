@@ -1,0 +1,65 @@
+name: Windows native build
+on:
+  push:
+    paths: &game_paths
+      - 'src/**'
+      - 'tools/**'
+      - 'tests/**'
+      - 'original/**'
+      - 'original-1.3b/**'
+      - 'analysis/jailed*/**'
+      - 'analysis/jailed*'
+      - 'analysis/typed/**'
+      - 'analysis/typed-1.3b/**'
+      - 'analysis/types-1.3b.h'
+      - 'analysis/original-1.3b-sha256.json'
+      - 'analysis/recovery-1.3b.json'
+      - 'analysis/types.h'
+      - 'analysis/original-sha256.json'
+      - 'vendor/JGMOD-main/**'
+      - 'docs/**'
+      - 'README.md'
+      - 'LICENSE'
+      - 'ASSET_LICENSE.md'
+      - 'THIRD_PARTY_NOTICES.md'
+      - 'CONTRIBUTING.md'
+      - 'CHANGELOG.md'
+      - '.gitattributes'
+      - '.gitignore'
+      - '.github/workflows/windows.yml'
+      - '.github/ISSUE_TEMPLATE/**'
+  pull_request:
+    paths: *game_paths
+  workflow_call:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check public source inputs
+        run: python tools/check_repo.py
+      - name: Verify isolated source archive
+        run: python tools/test_source.py
+      - name: Compile and run native Windows tests
+        run: python tools/build_windows.py --test
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CellBlockA-Windows-x64
+          path: |
+            dist/CellBlockA-Windows-x64.zip
+            dist/Jailed-Windows-x64.zip
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Windows-test-logs
+          path: |
+            build/windows/*.log
+            build/jailed-package-test/*.log

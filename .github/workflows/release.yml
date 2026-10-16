@@ -1,0 +1,42 @@
+name: Build all release artifacts
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'native-v*'
+permissions:
+  contents: read
+jobs:
+  native:
+    uses: ./.github/workflows/native.yml
+  windows:
+    uses: ./.github/workflows/windows.yml
+  collect:
+    needs: [native, windows]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: CellBlockA-*
+          path: release
+          merge-multiple: true
+      - name: Check complete artifact set and generate checksums
+        shell: python
+        run: |
+          import hashlib
+          from pathlib import Path
+          root = Path('release')
+          required = ['CellBlockA-Windows-x64.zip', 'Jailed-Windows-x64.zip',
+                      'CellBlockA-macOS-arm64.zip',
+                      'CellBlockA-macOS-x86_64.zip', 'Jailed-macOS-arm64.zip',
+                      'Jailed-macOS-x86_64.zip', 'CellBlockA-Linux-x86_64.tar.gz',
+                      'Jailed-Linux-x86_64.tar.gz', 'CellBlockA-source.tar.gz']
+          assert all((root / name).is_file() for name in required), 'Missing release artifact'
+          (root / 'SHA256SUMS.txt').write_text(''.join(
+              hashlib.sha256((root / name).read_bytes()).hexdigest() + '  ' + name + '\n'
+              for name in sorted(required)), encoding='utf-8')
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-files
+          path: release/*
+          if-no-files-found: error

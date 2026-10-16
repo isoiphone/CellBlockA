@@ -1,0 +1,30 @@
+name: Game or editor bug
+description: Report a build, runtime, or fidelity problem in Cell Block A or Jail-ed.
+title: ""
+body:
+  - type: input
+    id: platform
+    attributes:
+      label: OS and CPU architecture
+      placeholder: e.g. Windows 11 x64, macOS 26 arm64, Ubuntu 24.04 x64
+    validations:
+      required: true
+  - type: textarea
+    id: build
+    attributes:
+      label: Build or package
+      description: Include the command, commit/tag or downloaded artifact name.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction and expected/actual behavior
+      description: Include the map and exact keys/actions when relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs, screenshots or original reference
+      description: Remove personal paths and unrelated information before posting.

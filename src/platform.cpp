@@ -283,6 +283,10 @@ void _pause_mod(){pause_mod();}
 void _resume_mod(){resume_mod();}
 void native_shutdown(){if(audio_device){SDL_CloseAudioDevice(audio_device);audio_device=0;}initialized=false;SDL_Quit();}
 int main(int argc,char**argv){
+#ifdef CELL_TEST_BUILD
+ // Preserve the last completed check even when a subprocess crashes.
+ setvbuf(stdout,nullptr,_IONBF,0);
+#endif
  char *base_path=SDL_GetBasePath();
  if(!base_path){fprintf(stderr,"Cannot locate application: %s\n",SDL_GetError());return 1;}
  auto base=fs::u8path(base_path);SDL_free(base_path);

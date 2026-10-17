@@ -92,7 +92,8 @@ def main():
     run([sys.executable, 'tools/extract_original.py'])
     run([sys.executable, 'tools/generate_native.py'])
     run([sys.executable, 'tools/generate_jailed.py'])
-    flags = ['-target', 'x86_64-windows-gnu', '-O1', '-g', '-fsigned-char',
+    # DWARF keeps native crash stacks readable with the CI runner's GDB.
+    flags = ['-target', 'x86_64-windows-gnu', '-O1', '-gdwarf', '-fsigned-char',
              '-fwrapv', '-fno-strict-aliasing', '-Isrc', '-Ivendor/JGMOD-main/src',
              '-I' + str(sdl / 'include' / 'SDL2')]
 

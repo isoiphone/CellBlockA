@@ -98,8 +98,8 @@ Developer-only runtime settings:
 | `CELL_RESOURCE_DIR` | Override the directory containing extracted `assets`, `maps`, and `original` |
 | `CELL_SAVE_DIR` | Override user settings/screenshot directory |
 | `CELL_VERIFY=1` | Run regression tests in a test-enabled executable |
-| `CELL_INPUT_SCRIPT` | Timed replay file: milliseconds, original scan code, pressed/released |
-| `CELL_TEST_SECONDS` | Exit a scripted launch after this many seconds |
+| `CELL_INPUT_SCRIPT` | Replay file: milliseconds of keyboard-poll time, original scan code, pressed/released |
+| `CELL_TEST_SECONDS` | Exit after this many replay seconds (wall time when no input script is supplied) |
 | `CELL_TEST_CAPTURE` | Save the indexed framebuffer as a BMP at scripted exit |
 
 Do not build or package concurrently from the same checkout: extraction and source generation share output paths. Use separate checkouts for concurrent platform builds. Build scripts and source export operate only on native-game paths and do not use the website directory.
@@ -111,3 +111,5 @@ Replay timestamps must be nondecreasing, scan codes must be 0–127, and key sta
 `build/` and `dist/` contain disposable binaries, packages, logs, and downloaded Windows dependencies. Builds also recreate ignored COFF images, extracted assets/maps, and the resource symlink under `analysis/`. Downloaded Ghidra/JDK folders under `vendor/` are needed only for optional recovery research. None of these are source inputs.
 
 Keep the tracked original distributions, SHA-256 manifests, typed recovery evidence, generated source, and vendored JGMOD source/notices. The saved evidence makes normal builds independent of the recovery tools. The historical ZIPs and websites are intentional preservation artifacts.
+
+Scripted input starts at the first keyboard poll, after resource loading. Its clock advances by at most 50 ms per poll so startup, fades, or runner stalls cannot consume a 100 ms press/release pair between polls. Package tests allow up to 90 seconds of wall time while still requiring an active match and framebuffer capture. Normal gameplay timers and physical keyboard input are unaffected.

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fix Windows CRLF handling in source exports, avoid the Linux `_start` linker collision, and keep scripted key presses from being consumed during startup or long CI stalls.
+
 ### Game and editor
 
 - Recover Jail-ed 1.1b from the 1.3b distribution using the symbolized 1.0 reference, preserving editor tools, canvas, cursors, tile variants and start markers.

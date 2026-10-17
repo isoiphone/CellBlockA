@@ -31,7 +31,7 @@ def main():
     env.pop('CELL_RESOURCE_DIR', None)
     env.pop('CELL_VERIFY', None)
     result = subprocess.run([str(executable)], cwd=test_root, env=env,
-                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=45)
+                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=90)
     (test_root / 'smoke-test.log').write_bytes(result.stdout)
     print(result.stdout.decode('utf-8', errors='replace'), end='')
     result.check_returncode()

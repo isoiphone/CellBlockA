@@ -133,18 +133,24 @@ class ReleaseIsolation(unittest.TestCase):
             self.assertEqual(neighbor.read_text(), 'keep')
 
     def test_exported_readme_has_no_missing_website_links(self):
+        for newline in ('\n', '\r\n'):
+            with self.subTest(newline=repr(newline)):
+                self.check_exported_readme(newline)
+
+    def check_exported_readme(self, newline):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             readme = root / 'README.md'
             text = '# Game\n\nSee [site](www/index.html) and [DOS ZIP](archives/CellBlockA-original.zip).\n\nSee [build](docs/BUILDING.md).\n'
-            readme.write_text(text, encoding='utf-8')
+            original = text.replace('\n', newline).encode('utf-8')
+            readme.write_bytes(original)
             with patch.object(export_source, 'ROOT', root):
                 exported = export_source.export_bytes(readme).decode('utf-8')
             self.assertNotIn('](www/', exported)
             self.assertNotIn('](archives/', exported)
             self.assertIn('](docs/BUILDING.md)', exported)
             self.assertIn('not included', exported)
-            self.assertEqual(readme.read_text(encoding='utf-8'), text)
+            self.assertEqual(readme.read_bytes(), original)
 
 
 class MacDeploymentTarget(unittest.TestCase):

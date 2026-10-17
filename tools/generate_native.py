@@ -15,6 +15,8 @@ h=h.replace('typedef struct MOD { char name[32]; } MOD;', 'typedef struct JGMOD 
 h=h.replace('typedef struct PACKFILE { int dummy; } PACKFILE;', 'typedef struct PACKFILE { unsigned char *data; unsigned long size,pos; void *file; } PACKFILE;')
 h='''#ifndef CELL_NATIVE_H
 #define CELL_NATIVE_H
+/* Keep the recovered name in C, but avoid the ELF executable entry symbol. */
+#define _start cell_player_starts
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>

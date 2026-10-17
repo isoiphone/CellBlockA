@@ -4,6 +4,7 @@
 #include <cstring>
 #include <climits>
 #include "rendering.h"
+#include "replay_clock.h"
 
 static void test_map_bounds(){
   // In-range classification is unchanged, including every original tile byte.
@@ -50,6 +51,15 @@ static void test_map_bounds(){
 }
 
 int run_core_tests(){
+  ReplayClock replay;
+  uint64_t wall=60000000; // Resource loading must not consume scripted inputs.
+  assert(replay.poll(wall)==0);
+  for(int i=0;i<90;++i)replay.poll(wall+=50000);
+  assert(replay.elapsed==4500000); // First scripted Enter is now pressed.
+  auto after_stall=replay.poll(wall+=10000000);
+  assert(after_stall>=4500000&&after_stall<4600000); // Release must not collapse into the same poll.
+  assert(replay.poll(wall+=50000)==4600000);
+  puts("PASS replay excludes startup and preserves a key press across a long stall");
   assert(native_counter_micros(UINT64_C(1234567890123456789),UINT64_C(1000000000))==UINT64_C(1234567890123456));
   assert(native_counter_micros(UINT64_MAX,UINT64_C(24000000))==UINT64_C(768614336404564650));
   assert(native_counter_micros(UINT64_C(24000001),UINT64_C(24000000))==UINT64_C(1000000));

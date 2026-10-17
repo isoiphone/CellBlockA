@@ -39,7 +39,7 @@ def main():
                CELL_TEST_SECONDS='19', CELL_TEST_CAPTURE=str(capture))
     result = subprocess.run([str(relocated / 'CellBlockA.exe')], cwd=BUILD,
                             env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                            timeout=45)
+                            timeout=90)
     (BUILD / 'smoke-test.log').write_bytes(result.stdout)
     print(result.stdout.decode('utf-8', errors='replace'), end='')
     result.check_returncode()

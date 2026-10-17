@@ -100,3 +100,5 @@ jobs:
             build/core-test.log
             build/jailed-package-test/*.log
             build/package-test/smoke-test.log
+            build/package-test/gameplay.bmp
+            build/jailed-package-test/gameplay.bmp

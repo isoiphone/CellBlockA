@@ -2,6 +2,7 @@
 #include "native.h"
 #include "map_io.h"
 #include "jailed.h"
+#include "replay_clock.h"
 #include <SDL.h>
 #include <algorithm>
 #include <array>
@@ -40,6 +41,8 @@ struct InputStep {uint64_t at; int scan,down;};
 static std::deque<InputStep> test_input;
 static uint64_t test_duration;
 static fs::path test_capture;
+static bool scripted_replay;
+static ReplayClock replay_clock;
 static bool native_input_step_valid(uint64_t ms,int scan,int down){
  return ms<=UINT64_MAX/1000 && scan>=0 && scan<128 && (down==0 || down==1);
 }
@@ -83,11 +86,12 @@ void native_pump(){
  }
  if(quitting){pumping=false;native_shutdown();exit(0);}
  uint64_t now=micros();
- while(!test_input.empty() && now-start_us>=test_input.front().at){
+ uint64_t replay_time=scripted_replay?replay_clock.elapsed:now-start_us;
+ while(!test_input.empty() && replay_time>=test_input.front().at){
   auto input=test_input.front();test_input.pop_front();key_state[input.scan]=input.down;
   if(input.down)key_buffer.push_back(input.scan<<8);
  }
- if(test_duration && now-start_us>=test_duration){
+ if(test_duration && replay_time>=test_duration){
   if(_screen && !test_capture.empty()){
    auto surface=SDL_CreateRGBSurfaceWithFormat(0,_screen->w,_screen->h,32,SDL_PIXELFORMAT_ARGB8888);
    auto pixels=(uint32_t*)surface->pixels;
@@ -104,7 +108,8 @@ void native_pump(){
  }
  pumping=false;
 }
-unsigned char *native_keys(){native_pump();return key_state;}
+static void replay_poll(){if(scripted_replay)replay_clock.poll(micros());}
+unsigned char *native_keys(){replay_poll();native_pump();return key_state;}
 void native_present(){
  if(!renderer||!_screen)return;
  std::vector<uint32_t> rgba(_screen->w*_screen->h);
@@ -225,7 +230,7 @@ void _get_mod_filenames(){_free_mod_filenames();for(auto&e:fs::directory_iterato
 int _install_int(void(*fn)(),int ms){_remove_int(fn);timers.push_back({fn,(uint64_t)ms*1000,micros()+ms*1000});return 0;}
 int _install_int_ex(void(*fn)(),int ticks){_remove_int(fn);uint64_t p=uint64_t(ticks)*1000000/1193181;timers.push_back({fn,std::max<uint64_t>(p,1),micros()+p});return 0;}
 void _remove_int(void(*fn)()){timers.erase(std::remove_if(timers.begin(),timers.end(),[=](const Timer&t){return t.fn==fn;}),timers.end());}
-int _keypressed(){native_present();SDL_Delay(1);return !key_buffer.empty();}
+int _keypressed(){replay_poll();native_present();SDL_Delay(1);return !key_buffer.empty();}
 int _readkey(){while(!_keypressed()){}int k=key_buffer.front();key_buffer.pop_front();return k;}
 void _clear_keybuf(){key_buffer.clear();}
 int _clock(){return int((micros()-start_us)*91/1000000);}
@@ -295,6 +300,7 @@ int main(int argc,char**argv){
  if(getenv("CELL_VERIFY")){extern int run_core_tests();return run_core_tests();}
 #endif
  if(const char*p=getenv("CELL_INPUT_SCRIPT")){
+  scripted_replay=true;
   std::ifstream f(fs::u8path(p));
   if(!f){fprintf(stderr,"Cannot open replay input file\n");return 1;}
   while(f>>std::ws && !f.eof()){

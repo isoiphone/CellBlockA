@@ -30,7 +30,7 @@ def export_bytes(path):
     if path == ROOT / 'README.md':
         # The repository README may link to separately maintained website work.
         # Adapt only the exported copy; never inspect or change that work.
-        paragraphs = data.decode('utf-8').split('\n\n')
+        paragraphs = data.decode('utf-8').replace('\r\n', '\n').split('\n\n')
         exported = []
         noted_extras = False
         for paragraph in paragraphs:

@@ -1,6 +1,8 @@
 # The original bytes are evidence: never translate their DOS line endings.
 original/** -text
 original-1.3b/** -text
+# Recovery snapshots are hash-verified evidence on every platform.
+analysis/** -text
 /archives/*.zip -text
 # Preserve archived website response bytes and their recorded hashes.
 www/_archive/original/** -text

@@ -1,5 +1,7 @@
 #ifndef CELL_NATIVE_H
 #define CELL_NATIVE_H
+/* Keep the recovered name in C, but avoid the ELF executable entry symbol. */
+#define _start cell_player_starts
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>

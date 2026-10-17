@@ -68,7 +68,7 @@ def main():
         env.update(CELL_INPUT_SCRIPT=str(ROOT / 'tests/gameplay.input'),
                    CELL_TEST_SECONDS='19', CELL_TEST_CAPTURE=str(test_root / 'gameplay.bmp'))
         result = subprocess.run([str(game)], cwd=work, env=env, stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT, timeout=45)
+                                stderr=subprocess.STDOUT, timeout=90)
         (test_root / 'game.log').write_bytes(result.stdout)
         print(result.stdout.decode('utf-8', errors='replace'), end='')
         result.check_returncode()

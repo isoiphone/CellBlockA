@@ -6,6 +6,8 @@ Fight your opponent with weapons, fists, or a well-timed shove off a platform. B
 
 ![Cell Block A gameplay](docs/images/gameplay.png)
 
+**[Download prebuilt game and editor apps](https://github.com/isoiphone/CellBlockA/releases/tag/native-v1.3.0-preview.1)** for Windows x64, macOS 15+ (Apple Silicon or Intel), and Linux x64. The native preview includes source and SHA-256 checksums. No compiler is needed to run the downloads; Linux requires the system SDL2 runtime and Zenity for editor file dialogs.
+
 ## Status
 
 The goal is to preserve the original game, not redesign it. Two original memory-safety bugs are deliberately fixed: collision checks outside the map return empty space, and redraw requests are clipped to valid tiles.
@@ -13,9 +15,9 @@ The goal is to preserve the original game, not redesign it. Two original memory-
 | Platform | Build/run path | Verification so far |
 | --- | --- | --- |
 | macOS, Apple Silicon | Shell build; standalone `.app` | Game/editor built and sanitizer-tested; editor mouse/save/load checked interactively; edited maps tested in the game on macOS 26 |
-| macOS, Intel | Same shell build on an Intel Mac | CI configured; not run locally |
-| Windows 10/11, x64 | Python build; portable `.exe` package | Cross-compilation and package checks pass; native Windows testing pending |
-| Linux, x64/arm64 | Shell build with system SDL2 | Build path and Ubuntu x64 CI provided; native Linux testing pending |
+| macOS, Intel | Shell build; standalone `.app` | CI sanitizer, packaged gameplay and editor integration tests pass |
+| Windows 10/11, x64 | Python build; portable `.exe` package | Native CI regression, packaged gameplay and editor integration tests pass |
+| Linux, x64/arm64 | Shell build with system SDL2 | Ubuntu x64 CI sanitizer, packaged gameplay and editor integration tests pass; arm64 remains unverified |
 
 Audio mixing, timing, and some platform behavior are not certified identical to the DOS release. **Jail-ed 1.1b**, the editor from the 1.3b distribution, is also ported to native source. It preserves the original canvas, tools, cursors, artwork and map format. See the [editor guide](docs/JAILED.md) and [fidelity record](docs/FIDELITY.md).
 
@@ -95,7 +97,7 @@ python3 tools/export_source.py        # clean native-game source archive
 python3 tools/test_source.py          # verify the archive in isolation
 ```
 
-On Windows, `py -3 tools/build_windows.py --test` builds and runs its native tests. CI is configured for headless tests and packaging on Windows, Ubuntu, and Intel/Apple Silicon Macs; successful runs on these runners remain to be verified. These checks do not replace testing real graphics, audio, or two-player input.
+On Windows, `py -3 tools/build_windows.py --test` builds and runs its native tests. Headless tests and packaging pass on [Windows](https://github.com/isoiphone/CellBlockA/actions/runs/39007043354), [Ubuntu, and Intel/Apple Silicon Macs](https://github.com/isoiphone/CellBlockA/actions/runs/39007043357). These checks do not replace testing real graphics, audio, or two-player input.
 
 - [Build reference](docs/BUILDING.md)
 - [Contributing](CONTRIBUTING.md)

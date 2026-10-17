@@ -2,6 +2,8 @@
 
 Cell Block A and Jail-ed ship as native applications for macOS, Windows, and Linux. This guide covers source validation, the first GitHub push, and publishing downloadable packages.
 
+The [first native preview](https://github.com/isoiphone/CellBlockA/releases/tag/native-v1.3.0-preview.1) contains the game/editor binaries and source built from `99c0fb3`, with `SHA256SUMS.txt`. Its release notes record platform requirements and the successful CI runs.
+
 Author-owned code uses [MIT](../LICENSE); author-owned assets use [CC BY-SA 4.0](../ASSET_LICENSE.md). Bundled MOD music and embedded samples keep their existing terms and are excluded from both grants. Preserve all [third-party notices](../THIRD_PARTY_NOTICES.md). The outstanding rights and platform-verification records are listed below.
 
 ## What belongs in Git

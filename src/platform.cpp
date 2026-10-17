@@ -53,6 +53,17 @@ uint64_t native_counter_micros(uint64_t counter,uint64_t frequency){
 }
 static uint64_t micros(){return native_counter_micros(SDL_GetPerformanceCounter(),SDL_GetPerformanceFrequency());}
 static std::string upper(std::string s){for(auto &c:s)c=std::toupper((unsigned char)c);return s;}
+static fs::path environment_path(const char* name){
+#ifdef _WIN32
+ // The narrow CRT environment uses the Windows code page, not UTF-8.
+ // Read UTF-16 directly so overrides preserve every filesystem character.
+ std::wstring wide_name(name,name+strlen(name));
+ if(const wchar_t*p=_wgetenv(wide_name.c_str()))return fs::path(p);
+#else
+ if(const char*p=getenv(name))return fs::u8path(p);
+#endif
+ return {};
+}
 static fs::path original_path(const char *name){return cell::resolve_original(name);}
 static std::vector<uint8_t> read_file(const fs::path &p){if(!fs::is_regular_file(p))return {};std::ifstream f(p,std::ios::binary);return {std::istreambuf_iterator<char>(f),{}};}
 static uint16_t be16(const uint8_t *p){return p[0]*256+p[1];}
@@ -292,20 +303,22 @@ int main(int argc,char**argv){
  auto base=fs::u8path(base_path);SDL_free(base_path);
  if(base.filename().empty())base=base.parent_path();
  // SDL returns Contents/Resources for Mac bundles, and the EXE directory on Windows.
- if(const char*p=getenv("CELL_RESOURCE_DIR"))resources=fs::u8path(p);
+ auto resource_override=environment_path("CELL_RESOURCE_DIR");
+ if(!resource_override.empty())resources=resource_override;
  else if(fs::exists(base/"original"))resources=base;
  else if(fs::exists(base/"resources"/"original"))resources=base/"resources";
  else resources=base.parent_path()/"analysis";
- if(const char*p=getenv("CELL_SAVE_DIR"))saves=fs::u8path(p);
+ auto save_override=environment_path("CELL_SAVE_DIR");
+ if(!save_override.empty())saves=save_override;
  else{char*pref=SDL_GetPrefPath("KevlarX","CellBlockA");if(!pref){fprintf(stderr,"Cannot locate save directory: %s\n",SDL_GetError());return 1;}saves=fs::u8path(pref);SDL_free(pref);}
  fs::create_directories(saves);
  if(!fs::exists(resources/"original")){fprintf(stderr,"Missing original resources in %s\n",resources.u8string().c_str());return 1;}
 #ifdef CELL_TEST_BUILD
  if(getenv("CELL_VERIFY")){extern int run_core_tests();return run_core_tests();}
 #endif
- if(const char*p=getenv("CELL_INPUT_SCRIPT")){
+ if(getenv("CELL_INPUT_SCRIPT")){
   scripted_replay=true;
-  std::ifstream f(fs::u8path(p));
+  std::ifstream f(environment_path("CELL_INPUT_SCRIPT"));
   if(!f){fprintf(stderr,"Cannot open replay input file\n");return 1;}
   while(f>>std::ws && !f.eof()){
    uint64_t ms;int scan,down;
@@ -317,7 +330,7 @@ int main(int argc,char**argv){
   }
  }
  if(const char*p=getenv("CELL_TEST_SECONDS"))test_duration=uint64_t(atof(p)*1000000);
- if(const char*p=getenv("CELL_TEST_CAPTURE"))test_capture=fs::u8path(p);
+ test_capture=environment_path("CELL_TEST_CAPTURE");
 #ifdef JAILED_APP
  editor_mode=true;
  return jailed_main(argc,argv);

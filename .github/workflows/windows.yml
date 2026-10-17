@@ -62,7 +62,6 @@ jobs:
           set pagination off
           run
           thread apply all bt
-          info registers
           info files
           '@ | Set-Content build/windows/crash.gdb
           gdb --batch -x build/windows/crash.gdb --args build/windows/CellBlockA-tests.exe 2>&1 | Tee-Object build/windows/crash.log

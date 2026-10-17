@@ -4,6 +4,7 @@
 
 - Fix Windows CRLF handling in source exports, avoid the Linux `_start` linker collision, and keep scripted key presses from being consumed during startup or long CI stalls.
 - Keep regression assertions enabled in optimized Windows test builds and retain progress/debugger traces when native tests crash.
+- Read Windows path overrides as UTF-16, preserving Unicode save folders, resources, replay inputs and captures.
 
 ### Game and editor
 

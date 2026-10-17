@@ -53,6 +53,7 @@ def main():
         result = subprocess.run([str(editor), '--script', str(script)], cwd=work, env=env,
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=45)
         (test_root / 'editor.log').write_bytes(result.stdout)
+        print(result.stdout.decode('utf-8', errors='replace'), end='')
         result.check_returncode()
         a, b = unpack(new.read_bytes()), unpack(edited.read_bytes())
         assert len(a) == len(b) == 272
@@ -65,8 +66,11 @@ def main():
             assert unpack_from('<HH', pcx, 8) == (199, 149)
             assert pcx[-769] == 12
         # The game selects alphabetically first 000EDIT through its normal menu.
-        env.update(CELL_INPUT_SCRIPT=str(ROOT / 'tests/gameplay.input'),
-                   CELL_TEST_SECONDS='19', CELL_TEST_CAPTURE=str(test_root / 'gameplay.bmp'))
+        replay = work / 'gameplay.input'
+        capture = work / 'gameplay.bmp'
+        shutil.copy2(ROOT / 'tests/gameplay.input', replay)
+        env.update(CELL_INPUT_SCRIPT=str(replay),
+                   CELL_TEST_SECONDS='19', CELL_TEST_CAPTURE=str(capture))
         result = subprocess.run([str(game)], cwd=work, env=env, stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT, timeout=90)
         (test_root / 'game.log').write_bytes(result.stdout)
@@ -74,7 +78,8 @@ def main():
         result.check_returncode()
         assert b'map=maps/000EDIT.CEL;' in result.stdout, 'Game did not play the editor-created map'
         assert b'ticks=0\n' not in result.stdout
-        assert (test_root / 'gameplay.bmp').stat().st_size >= 640*480*3
+        assert capture.stat().st_size >= 640*480*3
+        shutil.copy2(capture, test_root / 'gameplay.bmp')
         shutil.copy2(work / 'editor.pcx', test_root / 'editor.pcx')
     print('PASS native editor create/save/load/edit/save, independent map/PCX decode, Unicode relocation, and actual game menu/match')
 

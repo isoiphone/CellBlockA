@@ -49,6 +49,16 @@ jobs:
         run: python tools/test_source.py
       - name: Compile and run native Windows tests
         run: python tools/build_windows.py --test
+      - name: Diagnose native test crashes
+        if: failure() && hashFiles('build/windows/CellBlockA-tests.exe') != ''
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_AUDIODRIVER: dummy
+          CELL_VERIFY: '1'
+        run: |
+          $env:CELL_RESOURCE_DIR = "$env:GITHUB_WORKSPACE/dist/CellBlockA-Windows-x64/resources"
+          $env:CELL_SAVE_DIR = "$env:GITHUB_WORKSPACE/build/windows/test-save"
+          gdb --batch -ex "set pagination off" -ex run -ex "thread apply all bt" -ex "info registers" --args build/windows/CellBlockA-tests.exe 2>&1 | Tee-Object build/windows/crash.log
       - uses: actions/upload-artifact@v4
         with:
           name: CellBlockA-Windows-x64

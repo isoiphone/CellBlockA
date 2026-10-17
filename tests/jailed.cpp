@@ -1,3 +1,6 @@
+#ifdef NDEBUG
+#error "Regression tests must be compiled with assertions enabled"
+#endif
 #include "jailed.h"
 #include "map_io.h"
 #include <cassert>

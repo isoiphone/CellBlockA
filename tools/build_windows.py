@@ -100,7 +100,9 @@ def main():
     def compile_source(source, name, test=False, editor=False):
         cpp = str(source).endswith('.cpp')
         output = obj_dir / (name + '.o')
-        extra = (['-DCELL_TEST_BUILD'] if test else []) + (['-DJAILED_APP'] if editor else [])
+        # Zig's optimized modes define NDEBUG; the regression suite requires
+        # assert expressions (including setup calls) to execute.
+        extra = (['-DCELL_TEST_BUILD', '-UNDEBUG'] if test else []) + (['-DJAILED_APP'] if editor else [])
         print('Compiling', source, flush=True)
         run([zig, 'c++' if cpp else 'cc', '-std=c++17' if cpp else '-std=c11',
              *flags, *extra, '-Wno-parentheses', '-Wno-pointer-sign',
@@ -115,8 +117,8 @@ def main():
         common.append(compile_source(f'vendor/JGMOD-main/src/{name}.c', 'jg_' + name))
     host_object = compile_source('src/platform.cpp', 'platform')
     test_host = compile_source('src/platform.cpp', 'platform-test', True)
-    tests = compile_source('tests/core.cpp', 'core')
-    editor_tests = compile_source('tests/jailed.cpp', 'jailed-tests')
+    tests = compile_source('tests/core.cpp', 'core', test=True)
+    editor_tests = compile_source('tests/jailed.cpp', 'jailed-tests', test=True)
     editor_host = compile_source('src/platform.cpp', 'jailed-platform', editor=True)
     editor = compile_source('src/jailed.cpp', 'jailed')
     dialogs = compile_source('src/native_dialog.cpp', 'native-dialog')

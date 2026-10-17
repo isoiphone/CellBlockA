@@ -1,3 +1,6 @@
+#ifdef NDEBUG
+#error "Regression tests must be compiled with assertions enabled"
+#endif
 #include "native.h"
 #include <cassert>
 #include <cstdio>
